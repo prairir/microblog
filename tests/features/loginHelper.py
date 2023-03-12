@@ -8,17 +8,17 @@ from selenium.webdriver.chrome.options import Options
 USERNAME = "aa"
 PASSWORD = "aa"
 
-options = Options()
-# options.add_argument("--headless") # Runs Chrome in headless mode.
-# options.add_argument('--no-sandbox') # Bypass OS security model
-# options.add_argument('start-maximized') #to maximize viewport this should still be headless
-# options.add_argument('disable-infobars')
-# options.add_argument("--disable-extensions")
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-driver.implicitly_wait(5)
-driver.get("http://localhost:5000/")
+# options = Options()
+# # options.add_argument("--headless") # Runs Chrome in headless mode.
+# # options.add_argument('--no-sandbox') # Bypass OS security model
+# # options.add_argument('start-maximized') #to maximize viewport this should still be headless
+# # options.add_argument('disable-infobars')
+# # options.add_argument("--disable-extensions")
+# driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+# driver.implicitly_wait(5)
+# driver.get("http://localhost:5000/")
 
-def loginProcedure():
+def loginProcedure(driver):
     userInput = driver.find_element(By.XPATH, "//input[@id='username']")
     userInput.send_keys(USERNAME)
 
@@ -28,7 +28,7 @@ def loginProcedure():
     submitInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/input[@id='submit']")
     submitInput.click()
 
-def registerProcedure():
+def registerProcedure(driver):
 
     driver.get("http://localhost:5000/auth/register")
 
@@ -47,9 +47,9 @@ def registerProcedure():
     regisrerInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/div[@class='form-group  required'][4]/input[@id='password2']")
     regisrerInput.click()
 
-def login():
+def login(driver):
    
-    loginProcedure()
+    loginProcedure(driver)
 
     dump_text = driver.page_source
     print(dump_text)
@@ -57,14 +57,14 @@ def login():
     # We want to register the user if they have not been registered before
     # We know they havent been registered if they are no redirected to the home page on login
     if (("Hi, aa!" in dump_text) is False):
-        registerProcedure()
+        registerProcedure(driver)
 
     driver.get(f'http://localhost:5000/user/{USERNAME}')
 
-def main():
-    login()
+# def main():
+#     login()
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
 
 
