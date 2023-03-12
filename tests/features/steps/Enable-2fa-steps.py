@@ -20,10 +20,13 @@ def step_given(context) :
     # options.add_argument('disable-infobars')
     # options.add_argument("--disable-extensions")
     context.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-    context.implicitly_wait(5)
-    context.get("http://localhost:5000/")
+    context.driver.implicitly_wait(5)
+    context.driver.get("http://localhost:5000/")
 
     login(context.driver)
+
+    context.driver.find_element(By.XPATH, "//html/body/div[@class='container']/table[@class='table table-hover']/tbody/tr/td[2]/p[5]/a")
+
 
 @then('the page should have a button to enable 2fa')
 def step_then(context) :
