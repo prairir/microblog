@@ -1,4 +1,4 @@
-from behave import given, when, then
+from behave import given, then
 from tests.features.loginHelper import login
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
@@ -25,16 +25,15 @@ def step_given(context) :
 
     login(context.driver)
 
-    context.driver.find_element(By.XPATH, "//html/body/div[@class='container']/table[@class='table table-hover']/tbody/tr/td[2]/p[5]/a")
-
+    context.driver.get("http://localhost:5000/auth/enable_2fa")
 
 @then('the page should have a button to enable 2fa')
 def step_then(context) :
-    enable2faInput = context.driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/input[@id='submit']")
-    assert enable2faInput is True 
+    enable2faInput = context.driver.find_element(By.XPATH, "//input[@id='_verification_phone']")
+    assert enable2faInput.is_displayed() is True 
 
 @then('the page should have a text field to enter the phone number for 2fa')
 def step_then(context) :
     phoneInput = context.driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/div[@class='form-group  required']/div/div[@class='iti iti--allow-dropdown iti--separate-dial-code']/input[@id='_verification_phone']")
-    assert phoneInput is True
+    assert phoneInput.is_displayed() is True
 

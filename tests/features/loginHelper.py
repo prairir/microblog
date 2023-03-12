@@ -8,6 +8,7 @@ from selenium.webdriver.chrome.options import Options
 USERNAME = "aa"
 PASSWORD = "aa"
 
+#These are here for testing
 # options = Options()
 # # options.add_argument("--headless") # Runs Chrome in headless mode.
 # # options.add_argument('--no-sandbox') # Bypass OS security model
@@ -52,7 +53,6 @@ def login(driver):
     loginProcedure(driver)
 
     dump_text = driver.page_source
-    print(dump_text)
 
     # We want to register the user if they have not been registered before
     # We know they havent been registered if they are no redirected to the home page on login
@@ -61,6 +61,7 @@ def login(driver):
 
     driver.get(f'http://localhost:5000/user/{USERNAME}')
 
+#These are here for testing
 # def main():
 #     login()
 
