@@ -1,4 +1,4 @@
-Feature: Add tasks to todo list
+Feature: Add 2fa using twillio
     As a user,
     I want to be able to have Two factor protection on my account,
     So that I feel safer about my account against potential threats

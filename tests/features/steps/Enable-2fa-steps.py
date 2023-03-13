@@ -34,7 +34,6 @@ def step_given(context) :
 
     login(context.driver)
     
-    context.driver.get(f'{BASETESTURL}/user/{USERNAME}')
     context.driver.get(f"{BASETESTURL}/auth/enable_2fa")
 
 @then('the page should have a button to enable 2fa')
