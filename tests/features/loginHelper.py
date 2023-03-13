@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.options import Options
 import os
 from dotenv import load_dotenv
 
+#Get the directory where the .env file is located (this case on microblog/)
 basedir = os.path.abspath(os.path.dirname('microblog'))
 load_dotenv(os.path.join(basedir, '.env'))
 
