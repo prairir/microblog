@@ -14,7 +14,7 @@ from selenium.webdriver.chrome.options import Options
 @given('the user is on 2fa page')
 def step_given(context) :
     options = Options()
-    #options.add_argument("--headless") # Runs Chrome in headless mode.
+    options.add_argument("--headless") # Runs Chrome in headless mode.
     options.add_argument('--no-sandbox') # Bypass OS security model
     options.add_argument('start-maximized') #to maximize viewport this should still be headless
     options.add_argument('disable-infobars')
