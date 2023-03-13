@@ -1,10 +1,19 @@
+import os
 from behave import given, then
+from dotenv import load_dotenv
 from tests.features.loginHelper import login
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+
+basedir = os.path.abspath(os.path.dirname('microblog'))
+load_dotenv(os.path.join(basedir, '.env'))
+
+USERNAME = os.getenv('USERNAMEFORTEST')
+PASSWORD = os.getenv('PASSWORDFORTEST')
+BASETESTURL = os.getenv('SELENIUM_TEST_URL')
 
 #NOTE this test is limited by the scope of this class
 #Ideally you would also test that an sms was received and 
@@ -21,11 +30,12 @@ def step_given(context) :
     options.add_argument("--disable-extensions")
     context.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     context.driver.implicitly_wait(5)
-    context.driver.get("http://localhost:5000/")
+    context.driver.get(BASETESTURL)
 
     login(context.driver)
-
-    context.driver.get("http://localhost:5000/auth/enable_2fa")
+    
+    context.driver.get(f'{BASETESTURL}/user/{USERNAME}')
+    context.driver.get(f"{BASETESTURL}/auth/enable_2fa")
 
 @then('the page should have a button to enable 2fa')
 def step_then(context) :
