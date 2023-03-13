@@ -48,6 +48,9 @@ def registerProcedure(driver):
     regisrerInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/div[@class='form-group  required'][4]/input[@id='password2']")
     regisrerInput.click()
 
+    driver.get("http://localhost:5000/auth/register")
+    loginProcedure()
+
 def login(driver):
    
     loginProcedure(driver)
@@ -58,6 +61,7 @@ def login(driver):
     # We know they havent been registered if they are no redirected to the home page on login
     if (("Hi, aa!" in dump_text) is False):
         registerProcedure(driver)
+
 
     driver.get(f'http://localhost:5000/user/{USERNAME}')
 
