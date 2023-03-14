@@ -23,12 +23,27 @@ class EditProfileForm(FlaskForm):
                 raise ValidationError(_('Please use a different username.'))
 
 
+class EditPostForm(FlaskForm):
+    body = StringField(_l('Message'),
+                       validators=[Length(min=0, max=140)])
+    submit = SubmitField(_l('Submit'))
+
+    def __init__(self, original_body, *args, **kwargs):
+        super(EditPostForm, self).__init__(*args, **kwargs)
+        self.original_body = original_body
+
+
 class EmptyForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
 class PostForm(FlaskForm):
     post = TextAreaField(_l('Say something'), validators=[DataRequired()])
+    submit = SubmitField(_l('Submit'))
+
+
+class EditForm(FlaskForm):
+    post = TextAreaField(_l('Edit post'), validators=[DataRequired()])
     submit = SubmitField(_l('Submit'))
 
 
