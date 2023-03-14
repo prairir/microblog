@@ -27,45 +27,45 @@ BASETESTURL = os.getenv('SELENIUM_TEST_URL')
 def loginProcedure(driver, username, password):
 
     driver.get(BASETESTURL)
-    userInput = driver.find_element(By.XPATH, "//input[@id='username']")
+    userInput = driver.find_element(By.ID, 'username')
     userInput.send_keys(username)
 
-    passInput = driver.find_element(By.XPATH, "//input[@id='password']")
+    passInput = driver.find_element(By.ID, 'password')
     passInput.send_keys(password)
 
-    submitInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/input[@id='submit']")
+    submitInput = driver.find_element(By.ID, 'submit')
     submitInput.click()
 
 def registerProcedure(driver, username, password):
 
     driver.get(BASETESTURL+"auth/register")
 
-    userRegisterInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/div[@class='form-group  required'][1]/input[@id='username']")
-    userRegisterInput.send_keys(username)
+    user_register_input = driver.find_element(By.ID, 'username')
+    user_register_input.send_keys(username)
 
-    emailRegisterInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/div[@class='form-group  required'][2]/input[@id='email']")
-    emailRegisterInput.send_keys(f'{username}@gmail.com')
+    email_register_input = driver.find_element(By.ID, 'email')
+    email_register_input.send_keys(f'{username}@gmail.com')
 
-    passRegisterInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/div[@class='form-group  required'][3]/input[@id='password']")
-    passRegisterInput.send_keys(password)
+    pass_register_input = driver.find_element(By.ID, 'password')
+    pass_register_input.send_keys(password)
 
-    passConfirmRegisterInput = driver.find_element(By.XPATH, "//input[@id='password2']")
-    passConfirmRegisterInput.send_keys(password)
+    pass_confirm_register_input = driver.find_element(By.ID, 'password2')
+    pass_confirm_register_input.send_keys(password)
 
-    regisrerInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/input[@id='submit']")
-    regisrerInput.click()
+    register_input = driver.find_element(By.ID, 'submit')
+    register_input.click()
     
     loginProcedure(driver, username, password)
 
 def login(driver, username, password):
-   
+
     loginProcedure(driver, username, password)
 
     dump_text = driver.page_source
 
     # We want to register the user if they have not been registered before
-    # We know they havent been registered if they are no redirected to the home page on login
-    if (('Hi, aa!' in dump_text) is False):
+    # We know they haven't been registered if they are not redirected to the home page on login
+    if driver.current_url != BASETESTURL:
         registerProcedure(driver, username, password)
 
 # # These are here for testing
