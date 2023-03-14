@@ -57,6 +57,7 @@ def registerProcedure(driver, username, password):
     
     loginProcedure(driver, username, password)
 
+
 def login(driver, username, password):
 
     loginProcedure(driver, username, password)
