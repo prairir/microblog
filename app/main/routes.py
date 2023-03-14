@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from langdetect import detect, LangDetectException
 from app import db
-from app.main.forms import EditProfileForm, EmptyForm, PostForm, SearchForm, \
+from app.main.forms import EditProfileForm, EmptyForm, PostForm, EditPostForm, SearchForm, \
     MessageForm
 from app.models import User, Post, Message, Notification
 from app.translate import translate
@@ -105,6 +105,22 @@ def edit_profile():
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title=_('Edit Profile'),
+                           form=form)
+
+
+@bp.route('/edit_post/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_post(id):
+    print(id)
+    post = Post.query.filter_by(id=id).first_or_404()
+    form = EditPostForm(post.body)
+    if form.validate_on_submit():
+        post.body = form.body.data
+        db.session.commit()
+        return redirect(url_for('main.index'))
+    elif request.method == 'GET':
+        form.body.data = post.body
+    return render_template('edit_post.html', title= ('Edit Post'),
                            form=form)
 
 
