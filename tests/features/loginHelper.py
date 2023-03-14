@@ -11,8 +11,6 @@ from dotenv import load_dotenv
 basedir = os.path.abspath(os.path.dirname('microblog'))
 load_dotenv(os.path.join(basedir, '.env'))
 
-USERNAME = os.getenv('USERNAMEFORTEST')
-PASSWORD = os.getenv('PASSWORDFORTEST')
 BASETESTURL = os.getenv('SELENIUM_TEST_URL')
 
 # #These are here for testing
@@ -26,49 +24,49 @@ BASETESTURL = os.getenv('SELENIUM_TEST_URL')
 # driver.implicitly_wait(5)
 # driver.get("http://localhost:5000/")
 
-def loginProcedure(driver):
+def loginProcedure(driver, username, password):
 
     driver.get(BASETESTURL)
     userInput = driver.find_element(By.XPATH, "//input[@id='username']")
-    userInput.send_keys(USERNAME)
+    userInput.send_keys(username)
 
     passInput = driver.find_element(By.XPATH, "//input[@id='password']")
-    passInput.send_keys(PASSWORD)
+    passInput.send_keys(password)
 
     submitInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/input[@id='submit']")
     submitInput.click()
 
-def registerProcedure(driver):
+def registerProcedure(driver, username, password):
 
     driver.get(BASETESTURL+"auth/register")
 
     userRegisterInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/div[@class='form-group  required'][1]/input[@id='username']")
-    userRegisterInput.send_keys(USERNAME)
+    userRegisterInput.send_keys(username)
 
     emailRegisterInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/div[@class='form-group  required'][2]/input[@id='email']")
-    emailRegisterInput.send_keys(f'{USERNAME}@gmail.com')
+    emailRegisterInput.send_keys(f'{username}@gmail.com')
 
     passRegisterInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/div[@class='form-group  required'][3]/input[@id='password']")
-    passRegisterInput.send_keys(PASSWORD)
+    passRegisterInput.send_keys(password)
 
     passConfirmRegisterInput = driver.find_element(By.XPATH, "//input[@id='password2']")
-    passConfirmRegisterInput.send_keys(PASSWORD)
+    passConfirmRegisterInput.send_keys(password)
 
     regisrerInput = driver.find_element(By.XPATH, "//html/body/div[@class='container']/div[@class='row']/div[@class='col-md-4']/form[@class='form']/input[@id='submit']")
     regisrerInput.click()
     
-    loginProcedure(driver)
+    loginProcedure(driver, username, password)
 
-def login(driver):
+def login(driver, username, password):
    
-    loginProcedure(driver)
+    loginProcedure(driver, username, password)
 
     dump_text = driver.page_source
 
     # We want to register the user if they have not been registered before
     # We know they havent been registered if they are no redirected to the home page on login
     if (('Hi, aa!' in dump_text) is False):
-        registerProcedure(driver)
+        registerProcedure(driver, username, password)
 
 # # These are here for testing
 # def main():

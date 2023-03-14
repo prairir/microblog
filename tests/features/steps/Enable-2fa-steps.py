@@ -32,7 +32,7 @@ def step_given(context) :
     context.driver.implicitly_wait(5)
     context.driver.get(BASETESTURL)
 
-    login(context.driver)
+    login(context.driver, USERNAME, PASSWORD)
     
     context.driver.get(f"{BASETESTURL}/auth/enable_2fa")
 
