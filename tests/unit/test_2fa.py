@@ -8,7 +8,7 @@ sys.path.append(newPath)
 
 import unittest
 from app import create_app, db
-from app.models import User
+from app.auth.forms import Enable2faForm
 from config import Config
 
 class TestConfig(Config):
@@ -32,6 +32,13 @@ class EditPostTestCase(unittest.TestCase):
     def test_2fa_url(self):
         with self.app.app_context(), self.app.test_request_context():
             self.assertEqual('/auth/enable_2fa', url_for('auth.enable_2fa'))
+
+    # fake phonenumber
+    def test_valid_phone_verification(self):
+        self.assertFalse(Enable2faForm.validate_verification_phone(6135550112))
+
+    def test_invalid_phone_verification(self):
+        self.assertFalse(Enable2faForm.validate_verification_phone(555555555))
 
 if __name__ == '__main__':
     unittest.main()
