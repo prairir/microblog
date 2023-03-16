@@ -143,7 +143,6 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         time_obj = datetime.strptime(post_time, '%Y-%m-%d %H:%M:%S.%f')
         a = Archive(id=post_id, body=post_body, author=post_user, archived_by=self.id, archived_owner=user_id, timestamp=time_obj)
         db.session.add(a)
-        print("Archived!")
         return True
 
     def delete_post(self, post_id):
@@ -151,7 +150,6 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def archive_remove(self, post_id):
         self.archived.filter_by(id=post_id).delete()
-        print("Removed Archive!")
 
     def has_archived_post(self, post_id):
         return Archive.query.filter_by(id=post_id, archived_by=self.id).count() > 0
