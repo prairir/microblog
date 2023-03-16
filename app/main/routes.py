@@ -7,9 +7,10 @@ from langdetect import detect, LangDetectException
 from app import db
 from app.main.forms import EditProfileForm, EmptyForm, PostForm, EditPostForm, SearchForm, \
     MessageForm
-from app.models import User, Post, Message, Notification
+from app.models import User, Post, Message, Notification, Archive
 from app.translate import translate
 from app.main import bp
+from sqlalchemy import select
 
 
 @bp.before_app_request
@@ -19,6 +20,7 @@ def before_request():
         db.session.commit()
         g.search_form = SearchForm()
     g.locale = str(get_locale())
+    db.create_all()
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -82,7 +84,6 @@ def user(username):
     return render_template('user.html', user=user, posts=posts.items,
                            next_url=next_url, prev_url=prev_url, form=form)
 
-
 @bp.route('/user/<username>/popup')
 @login_required
 def user_popup(username):
@@ -107,6 +108,58 @@ def edit_profile():
     return render_template('edit_profile.html', title=_('Edit Profile'),
                            form=form)
 
+@bp.route('/archived/<username>')
+@login_required
+def view_archive(username):
+    no_posts = False
+    user = User.query.filter_by(username=username).first_or_404()
+    page = request.args.get('page', 1, type=int)
+    posts = user.archived.order_by(Archive.timestamp.desc()).paginate(
+        page=page, per_page=current_app.config['POSTS_PER_PAGE'],
+        error_out=False)
+    if not current_user.has_archived_posts():
+        no_posts = True
+        flash(_('You have no archived posts!'))
+    
+    next_url = url_for('main.view_archive', username=user.username,
+                       page=posts.next_num) if posts.has_next else None
+    prev_url = url_for('main.view_archive', username=user.username,
+                       page=posts.prev_num) if posts.has_prev else None
+    form = EmptyForm()
+    return render_template('archived_posts.html', user=user, archived=posts.items, none_archived=no_posts,
+                           next_url=next_url, prev_url=prev_url, form=form)
+
+@bp.route('/archive/<post_id>/<post_b>/<user_id>/<post_user>/<post_time>')
+@login_required
+def archive(post_id, post_b, user_id, post_user, post_time):
+    current_user.archive(post_id, post_b, user_id, post_user, post_time)
+    db.session.commit()
+    flash(_('You have archived %(username)s post!', username=post_user))
+    return redirect(url_for('main.explore'))
+
+@bp.route('/archive/<post_user>/<post_id>')
+@login_required
+def archive_remove(post_user, post_id):
+    current_user.archive_remove(post_id)
+    db.session.commit()
+    flash(_('You have removed %(username)s post from your archive!', username=post_user))
+    return redirect(url_for('main.explore'))
+
+@bp.route('/archived/<post_user>/<post_id>')
+@login_required
+def archive_remove_user(post_user, post_id):
+    current_user.archive_remove(post_id)
+    db.session.commit()
+    flash(_('You have removed %(username)s post from your archive!', username=post_user))
+    return redirect(url_for('main.view_archive', username=current_user.username))
+
+@bp.route('/delete/<post_id>')
+@login_required
+def delete(post_id):
+    current_user.delete_post(post_id)
+    db.session.commit()
+    flash(_('You have delete your post!'))
+    return redirect(url_for('main.index'))
 
 @bp.route('/edit_post/<int:id>', methods=['GET', 'POST'])
 @login_required

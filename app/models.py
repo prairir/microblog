@@ -12,6 +12,7 @@ import redis
 import rq
 from app import db, login
 from app.search import add_to_index, remove_from_index, query_index
+from datetime import datetime
 
 
 class SearchableMixin(object):
@@ -89,6 +90,7 @@ followers = db.Table(
 )
 
 
+
 class User(UserMixin, PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -96,6 +98,9 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     password_hash = db.Column(db.String(128))
     verification_phone = db.Column(db.String(16))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    # link archive class to user
+    archived = db.relationship('Archive', foreign_keys='Archive.archived_by', backref='archivee', lazy='dynamic')
+    archived_other_user = db.relationship('Archive', foreign_keys='Archive.archived_owner', backref='own', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     token = db.Column(db.String(32), index=True, unique=True)
@@ -132,7 +137,26 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
+    
+    # Create new achive entry
+    def archive(self, post_id, post_body, user_id, post_user, post_time):
+        time_obj = datetime.strptime(post_time, '%Y-%m-%d %H:%M:%S.%f')
+        a = Archive(id=post_id, body=post_body, author=post_user, archived_by=self.id, archived_owner=user_id, timestamp=time_obj)
+        db.session.add(a)
+        return True
 
+    def delete_post(self, post_id):
+        return self.posts.filter_by(id=post_id).delete()
+
+    def archive_remove(self, post_id):
+        self.archived.filter_by(id=post_id).delete()
+
+    def has_archived_post(self, post_id):
+        return Archive.query.filter_by(id=post_id, archived_by=self.id).count() > 0
+    
+    def has_archived_posts(self):
+        return Archive.query.filter_by(archived_by=self.id).count() > 0
+    
     def follow(self, user):
         if not self.is_following(user):
             self.followed.append(user)
@@ -254,6 +278,20 @@ class Post(SearchableMixin, db.Model):
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
+
+# Archive class for archived posts    
+class Archive(db.Model):
+    archive_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer)
+    body = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author = db.Column(db.String(50))
+    archived_owner = db.Column(db.Integer, db.ForeignKey('user.id'))
+    archived_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    language = db.Column(db.String(5))
+
+    def __repr__(self):
+        return '<Archive {}>'.format(self.body)
 
 
 class Message(db.Model):
