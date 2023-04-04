@@ -5,6 +5,7 @@ from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from langdetect import detect, LangDetectException
 from app import db
+import app
 from app.main.forms import EditProfileForm, EmptyForm, PostForm, EditPostForm, SearchForm, \
     MessageForm
 from app.models import User, Post, Message, Notification, Archive
@@ -21,6 +22,13 @@ def before_request():
         g.search_form = SearchForm()
     g.locale = str(get_locale())
     db.create_all()
+
+    app.app_context().push()
+    user = User(username='aa', email='aa@gmail.com')
+    user.set_password('aa')
+    db.session.add(user)
+    db.session.commit()
+
 
 
 @bp.route('/', methods=['GET', 'POST'])
