@@ -1,4 +1,7 @@
+from datetime import datetime, timedelta
 from flask import jsonify, request, url_for, abort
+from flask_login import login_user
+import jwt
 from app import db
 from app.models import User
 from app.api import bp
@@ -59,6 +62,27 @@ def create_user():
     response = jsonify(user.to_dict())
     response.status_code = 201
     response.headers['Location'] = url_for('api.get_user', id=user.id)
+    return response
+
+
+@bp.route('/login', methods=['POST'])
+def login():
+    data = request.get_json() or {}
+    username = data.get('username')
+    password = data.get('password')
+    if not username or not password:
+        return bad_request('must include both username and password fields')
+
+    user = User.query.filter_by(username=username).first()
+
+    now = datetime.utcnow()
+    expiration_time = now + timedelta(minutes=60)
+
+    token = jwt.encode({'user_id': user.id, 'exp': expiration_time}, 'your-secret-key', algorithm='HS256')
+
+    response = jsonify({'access_token': token, 'user': user.to_dict()})
+    login_user(user)
+    response.status_code = 200
     return response
 
 
