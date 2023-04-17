@@ -108,7 +108,7 @@ def edit_profile():
     return render_template('edit_profile.html', title=_('Edit Profile'),
                            form=form)
 
-@bp.route('/archived/<username>')
+@bp.route('/archived/<username>', methods=['GET', 'POST'])
 @login_required
 def view_archive(username):
     no_posts = False
