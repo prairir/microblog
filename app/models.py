@@ -99,6 +99,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     verification_phone = db.Column(db.String(16))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     # link archive class to user
+    # first tracks posts archived by current user, second is a tracker for owner of post
     archived = db.relationship('Archive', foreign_keys='Archive.archived_by', backref='archivee', lazy='dynamic')
     archived_other_user = db.relationship('Archive', foreign_keys='Archive.archived_owner', backref='own', lazy='dynamic')
     about_me = db.Column(db.String(140))
@@ -137,25 +138,6 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
-    
-    # Create new achive entry
-    def archive(self, post_id, post_body, user_id, post_user, post_time):
-        time_obj = datetime.strptime(post_time, '%Y-%m-%d %H:%M:%S.%f')
-        a = Archive(id=post_id, body=post_body, author=post_user, archived_by=self.id, archived_owner=user_id, timestamp=time_obj)
-        db.session.add(a)
-        return True
-
-    def delete_post(self, post_id):
-        return self.posts.filter_by(id=post_id).delete()
-
-    def archive_remove(self, post_id):
-        self.archived.filter_by(id=post_id).delete()
-
-    def has_archived_post(self, post_id):
-        return Archive.query.filter_by(id=post_id, archived_by=self.id).count() > 0
-    
-    def has_archived_posts(self):
-        return Archive.query.filter_by(archived_by=self.id).count() > 0
     
     def follow(self, user):
         if not self.is_following(user):
@@ -261,6 +243,25 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         if user is None or user.token_expiration < datetime.utcnow():
             return None
         return user
+    
+    # Create new achive entry
+    def archive(self, post_id, post_body, user_id, post_user, post_time):
+        time_obj = datetime.strptime(post_time, '%Y-%m-%d %H:%M:%S.%f')
+        a = Archive(id=post_id, body=post_body, author=post_user, archived_by=self.id, archived_owner=user_id, timestamp=time_obj)
+        db.session.add(a)
+        return True
+
+    def delete_post(self, post_id):
+        return self.posts.filter_by(id=post_id).delete()
+
+    def archive_remove(self, post_id):
+        self.archived.filter_by(id=post_id).delete()
+
+    def has_archived_post(self, post_id):
+        return Archive.query.filter_by(id=post_id, archived_by=self.id).count() > 0
+    
+    def has_archived_posts(self):
+        return Archive.query.filter_by(archived_by=self.id).count() > 0
 
 
 @login.user_loader
@@ -281,6 +282,7 @@ class Post(SearchableMixin, db.Model):
 
 # Archive class for archived posts    
 class Archive(db.Model):
+    #unique archive item ID, id of original post, body of post, timestamp of post, author of post, orginial post author, user who archived post, language
     archive_id = db.Column(db.Integer, primary_key=True)
     id = db.Column(db.Integer)
     body = db.Column(db.String(140))

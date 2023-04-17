@@ -107,7 +107,7 @@ def edit_profile():
     return render_template('edit_profile.html', title=_('Edit Profile'),
                            form=form)
 
-@bp.route('/archived/<username>')
+@bp.route('/archived/<username>', methods=['GET', 'POST'])
 @login_required
 def view_archive(username):
     no_posts = False
@@ -128,7 +128,7 @@ def view_archive(username):
     return render_template('archived_posts.html', user=user, archived=posts.items, none_archived=no_posts,
                            next_url=next_url, prev_url=prev_url, form=form)
 
-@bp.route('/archive/<post_id>/<post_b>/<user_id>/<post_user>/<post_time>')
+@bp.route('/archive/<post_id>/<post_b>/<user_id>/<post_user>/<post_time>', methods=['GET', 'POST'])
 @login_required
 def archive(post_id, post_b, user_id, post_user, post_time):
     current_user.archive(post_id, post_b, user_id, post_user, post_time)
@@ -136,7 +136,7 @@ def archive(post_id, post_b, user_id, post_user, post_time):
     flash(_('You have archived %(username)s post!', username=post_user))
     return redirect(url_for('main.explore'))
 
-@bp.route('/archive/<post_user>/<post_id>')
+@bp.route('/archive/<post_user>/<post_id>', methods=['GET', 'POST'])
 @login_required
 def archive_remove(post_user, post_id):
     current_user.archive_remove(post_id)
@@ -144,7 +144,7 @@ def archive_remove(post_user, post_id):
     flash(_('You have removed %(username)s post from your archive!', username=post_user))
     return redirect(url_for('main.explore'))
 
-@bp.route('/archived/<post_user>/<post_id>')
+@bp.route('/archived/<post_user>/<post_id>', methods=['GET', 'POST'])
 @login_required
 def archive_remove_user(post_user, post_id):
     current_user.archive_remove(post_id)
@@ -152,7 +152,7 @@ def archive_remove_user(post_user, post_id):
     flash(_('You have removed %(username)s post from your archive!', username=post_user))
     return redirect(url_for('main.view_archive', username=current_user.username))
 
-@bp.route('/delete/<post_id>')
+@bp.route('/delete/<post_id>', methods=['GET', 'POST'])
 @login_required
 def delete(post_id):
     current_user.delete_post(post_id)
