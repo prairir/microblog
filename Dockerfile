@@ -52,5 +52,8 @@ RUN chown -R microblog:microblog ./
 # set user to `microblog`
 USER microblog
 
+# tell user to expose port 5000
 EXPOSE 5000
+
+# set entry point to `./boot.sh`
 ENTRYPOINT ["./boot.sh"]
