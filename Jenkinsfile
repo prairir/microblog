@@ -10,6 +10,10 @@ pipeline {
         }
         stage('Build') {
             steps {
+                withCredentials([file(credentialsId: 'my-creds-id', variable: 'MY_ENV_VARS', file: '/path/to/.env')]) {
+                    sh 'echo $MY_ENV_VARS'
+                    // your build steps go here
+                }
                 sh 'docker build -t microblog:latest .'
             }
         }
