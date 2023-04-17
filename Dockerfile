@@ -19,6 +19,7 @@ RUN venv/bin/pip install -r requirements.txt
 # install a bunch of stuff in venv
 RUN venv/bin/pip install gunicorn pymysql cryptography
 
+# copy `.env` into the container as `.env`
 COPY .env .env
 COPY app app
 COPY migrations migrations
