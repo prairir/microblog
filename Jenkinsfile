@@ -12,7 +12,8 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'ENV_FILE', variable: 'MY_ENV_FILE', file: '/.env')]) {
                     sh 'cat $MY_ENV_FILE'
-                    sh 'ls'
+                    sh 'touch .env'
+                    sh 'cp $MY_ENV_FILE .env'
                 }
                 sh 'docker build -t microblog:latest .'
             }
