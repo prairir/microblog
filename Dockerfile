@@ -1,3 +1,4 @@
+# base docker container
 FROM python:slim
 
 RUN useradd microblog
