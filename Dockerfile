@@ -27,6 +27,7 @@ COPY app app
 
 # copy `migration` into the container as `migration`
 COPY migrations migrations
+
 COPY microblog.py config.py boot.sh ./
 RUN chmod a+x boot.sh
 
