@@ -34,6 +34,7 @@ COPY microblog.py config.py boot.sh ./
 # make `boot.sh` executable
 RUN chmod a+x boot.sh
 
+# set environment variable `FLASK_APP` to `microblog.py`
 ENV FLASK_APP microblog.py
 
 CMD flask db upgrade
