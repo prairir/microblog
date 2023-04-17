@@ -99,6 +99,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     verification_phone = db.Column(db.String(16))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     # link archive class to user
+    # first tracks posts archived by current user, second is a tracker for owner of post
     archived = db.relationship('Archive', foreign_keys='Archive.archived_by', backref='archivee', lazy='dynamic')
     archived_other_user = db.relationship('Archive', foreign_keys='Archive.archived_owner', backref='own', lazy='dynamic')
     about_me = db.Column(db.String(140))
