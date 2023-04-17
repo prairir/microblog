@@ -46,7 +46,10 @@ CMD flask db migrate -m "two-factor authentication"
 # upgrade db
 CMD flask db upgrade
 
+# make this directory owned by user `microblog`
 RUN chown -R microblog:microblog ./
+
+# set user to `microblog`
 USER microblog
 
 EXPOSE 5000
