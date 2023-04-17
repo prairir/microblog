@@ -25,8 +25,27 @@ unit tests must follow the "test*.py" regex to be picked up
 
 1. Individual tests
 
-run " python ./ests/unit/test_example.py "
+run " python ./tests/unit/test_example.py "
 
 2. Run all unit tests
 
 run "  python -m unittest discover -s ./tests/unit "
+
+# How to run SonarQube
+
+### Make sure that sonar cube scanner is installed
+
+Linux
+Run " sonar-scanner \
+  -Dsonar.projectKey=Microblog \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.token=sqp_4a8f52f75c3f744c5080ec85f786e5927cef3c8e " 
+
+Windows
+Run " sonar-scanner.bat -D"sonar.projectKey=Microblog" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.token=sqp_4a8f52f75c3f744c5080ec85f786e5927cef3c8e" 
+
+### Then run the scanner to create the report
+
+Windows
+Run " sonar-scanner.bat -D"sonar.projectKey=Microblog" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.token=sqp_4a8f52f75c3f744c5080ec85f786e5927cef3c8e" 
