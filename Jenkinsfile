@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                withCredentials([file(credentialsId: 'ENV_FILE', variable: 'MY_ENV_FILE', file: '.env')]) {
+                withCredentials([file(credentialsId: 'ENV_FILE', variable: 'MY_ENV_FILE', file: '/.env')]) {
                     sh 'cat $MY_ENV_FILE'
                 }
                 sh 'docker build -t microblog:latest .'
