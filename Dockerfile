@@ -37,8 +37,11 @@ RUN chmod a+x boot.sh
 # set environment variable `FLASK_APP` to `microblog.py`
 ENV FLASK_APP microblog.py
 
+# upgrade db
 CMD flask db upgrade
 CMD flask db migrate -m "two-factor authentication"
+
+# upgrade db
 CMD flask db upgrade
 
 RUN chown -R microblog:microblog ./
