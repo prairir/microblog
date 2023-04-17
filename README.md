@@ -4,9 +4,9 @@ This is an example application featured in my [Flask Mega-Tutorial](https://blog
 
 # Running the docker instance
 
-1. "docker build -t microblog:latest ."
+1. ```docker build -t microblog:latest .```
 
-2. "docker run --name microblog -d -p 5000:5000 --rm microblog:latest" 
+2. ```docker run --name microblog -d -p 5000:5000 --rm microblog:latest```
 
 # How to run behave tutorial
 
@@ -23,7 +23,7 @@ Also step files must follow the regex *step.py
 
 1. Running all behave features
 
-run " behave tests/features/add-task.feature "
+run  ```behave tests/features/add-task.feature```
 
 # How to run unit tests
 
@@ -31,19 +31,19 @@ unit tests must follow the "test*.py" regex to be picked up
 
 1. Individual tests
 
-run " python ./tests/unit/test_example.py "
+run ```python ./tests/unit/test_example.py ```
 
 2. Run all unit tests
 
-run "  python -m unittest discover -s ./tests/unit "
+run ``` python -m unittest discover -s ./tests/unit ```
 
 # How to run SonarQube
 
 ### Make sure that sonar cube scanner is installed
 
-Run " docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest"
+Run ``` docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest```
 
 ### Then run the scanner to create the report
 
 Windows
-Run " sonar-scanner.bat -D"sonar.projectKey=Microblog" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.token=sqp_4a8f52f75c3f744c5080ec85f786e5927cef3c8e" 
+Run ``` sonar-scanner.bat -D"sonar.projectKey=Microblog" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.token=sqp_4a8f52f75c3f744c5080ec85f786e5927cef3c8e" ```
