@@ -2,6 +2,12 @@
 
 This is an example application featured in my [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world). See the tutorial for instructions on how to work with it.
 
+# Running the docker instance
+
+1. "docker build -t microblog:latest ."
+
+2. "docker run --name microblog -d -p 5000:5000 --rm microblog:latest" 
+
 # How to run behave tutorial
 
 *NOTE* behave steps in the .feature file MUST unicode match those in the 'steps' file
