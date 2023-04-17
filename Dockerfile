@@ -1,6 +1,7 @@
 # base docker container
 FROM python:slim
 
+# create user microblog
 RUN useradd microblog
 
 WORKDIR /home/microblog
