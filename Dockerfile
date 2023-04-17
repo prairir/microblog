@@ -30,6 +30,8 @@ COPY migrations migrations
 
 # copy a bunch of stuff into the current directory in the container
 COPY microblog.py config.py boot.sh ./
+
+# make `boot.sh` executable
 RUN chmod a+x boot.sh
 
 ENV FLASK_APP microblog.py
