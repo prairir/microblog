@@ -4,6 +4,7 @@ FROM python:slim
 # create user microblog
 RUN useradd microblog
 
+# make the default and work directory `/home/microblog`
 WORKDIR /home/microblog
 
 COPY requirements.txt requirements.txt
