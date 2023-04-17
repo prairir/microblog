@@ -39,6 +39,8 @@ ENV FLASK_APP microblog.py
 
 # upgrade db
 CMD flask db upgrade
+
+# migrate db
 CMD flask db migrate -m "two-factor authentication"
 
 # upgrade db
