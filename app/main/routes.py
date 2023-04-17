@@ -145,7 +145,7 @@ def archive_remove(post_user, post_id):
     flash(_('You have removed %(username)s post from your archive!', username=post_user))
     return redirect(url_for('main.explore'))
 
-@bp.route('/archived/<post_user>/<post_id>')
+@bp.route('/archived/<post_user>/<post_id>', methods=['GET', 'POST'])
 @login_required
 def archive_remove_user(post_user, post_id):
     current_user.archive_remove(post_id)
