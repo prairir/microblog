@@ -21,6 +21,8 @@ RUN venv/bin/pip install gunicorn pymysql cryptography
 
 # copy `.env` into the container as `.env`
 COPY .env .env
+
+# copy `app` into the container as `app`
 COPY app app
 COPY migrations migrations
 COPY microblog.py config.py boot.sh ./
