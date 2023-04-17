@@ -129,7 +129,7 @@ def view_archive(username):
     return render_template('archived_posts.html', user=user, archived=posts.items, none_archived=no_posts,
                            next_url=next_url, prev_url=prev_url, form=form)
 
-@bp.route('/archive/<post_id>/<post_b>/<user_id>/<post_user>/<post_time>')
+@bp.route('/archive/<post_id>/<post_b>/<user_id>/<post_user>/<post_time>', methods=['GET', 'POST'])
 @login_required
 def archive(post_id, post_b, user_id, post_user, post_time):
     current_user.archive(post_id, post_b, user_id, post_user, post_time)
