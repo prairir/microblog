@@ -137,7 +137,7 @@ def archive(post_id, post_b, user_id, post_user, post_time):
     flash(_('You have archived %(username)s post!', username=post_user))
     return redirect(url_for('main.explore'))
 
-@bp.route('/archive/<post_user>/<post_id>')
+@bp.route('/archive/<post_user>/<post_id>', methods=['GET', 'POST'])
 @login_required
 def archive_remove(post_user, post_id):
     current_user.archive_remove(post_id)
