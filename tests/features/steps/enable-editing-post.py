@@ -16,23 +16,22 @@ PASSWORD = os.getenv('PASSWORDFORTEST')
 BASETESTURL = os.getenv('SELENIUM_TEST_URL')
 
 
-@given('the user has posted something')
+@given('the user is on the edit post page')
 def step_given(context):
     options = Options()
-    options.add_argument("--headless")  # Runs Chrome in headless mode.
-    options.add_argument('--no-sandbox')  # Bypass OS security model
-    # to maximize viewport this should still be headless
-    options.add_argument('start-maximized')
+    options.add_argument("--headless") # Runs Chrome in headless mode.
+    options.add_argument('--no-sandbox') # Bypass OS security model
+    options.add_argument('start-maximized') #to maximize viewport this should still be headless
     options.add_argument('disable-infobars')
     options.add_argument("--disable-extensions")
-    context.driver = webdriver.Chrome(
-        service=ChromeService(ChromeDriverManager().install()))
+    context.driver = webdriver.Chrome(options=options, service=ChromeService(ChromeDriverManager().install()))
     context.driver.implicitly_wait(5)
     context.driver.get(BASETESTURL)
 
-    login(context.driver)
+    login(context.driver, USERNAME, PASSWORD)
 
-    context.driver.get(f"{BASETESTURL}/edit_post")
+    ##Check post with ID = 1 
+    context.driver.get(f"{BASETESTURL}/edit_post/1")
 
 
 @then('the page should have a text field to change their post')
