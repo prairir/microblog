@@ -11,9 +11,8 @@ pipeline {
         stage('Build') {
             steps {
                 withCredentials([file(credentialsId: 'ENV_FILE', variable: 'MY_ENV_FILE', file: '/.env')]) {
+                    sh 'ls -a'
                     sh 'cp $MY_ENV_FILE .env'
-                    sh 'ls'
-                    sh 'cat .env'
                 }
                 sh 'docker build -t microblog:latest .'
             }
