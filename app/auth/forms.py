@@ -3,7 +3,6 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from flask_babel import _, lazy_gettext as _l
 from app.models import User
-import phonenumbers
 
 class LoginForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
@@ -20,14 +19,6 @@ class Confirm2faForm(FlaskForm):
 class Enable2faForm(FlaskForm):
     verification_phone = StringField('Phone', validators=[DataRequired()])
     submit = SubmitField('Enable 2FA')
-
-    def validate_verification_phone(self, verification_phone):
-        try:
-            p = phonenumbers.parse(verification_phone.data)
-            if not phonenumbers.is_valid_number(p):
-                raise ValueError()
-        except (phonenumbers.phonenumberutil.NumberParseException, ValueError):
-            raise ValidationError('Invalid phone number')
 
 class Disable2faForm(FlaskForm):
     submit = SubmitField('Disable 2FA')
