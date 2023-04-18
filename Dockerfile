@@ -14,7 +14,7 @@ COPY requirements.txt requirements.txt
 RUN python -m venv venv
 
 # install `requirements.txt` in venv
-RUN venv/bin/pip install -r requirements.txt
+RUN venv/bin/pip install --force-reinstall -r requirements.txt
 
 # install a bunch of stuff in venv
 RUN venv/bin/pip install gunicorn pymysql cryptography
