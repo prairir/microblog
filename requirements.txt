@@ -64,6 +64,7 @@ SQLAlchemy==1.4.20
 twilio==7.16.4
 trio==0.22.0
 trio-websocket==0.9.2
+twilio==7.16.4
 typing_extensions==4.5.0
 urllib3==1.26.6
 visitor==0.1.3
