@@ -8,6 +8,14 @@ This is an example application featured in my [Flask Mega-Tutorial](https://blog
 
 2. ```docker run --name microblog -d -p 5000:5000 --rm microblog:latest```
 
+# Calculate line coverage
+
+Run ```coverage run -m unittest discover -s ./tests/unit```
+
+After generating the report with the above command then run...
+
+```coverage report``` or ```coverage html```
+
 # How to run behave tutorial
 
 *NOTE* behave steps in the .feature file MUST unicode match those in the 'steps' file
