@@ -35,7 +35,6 @@ httpie==2.4.0
 idna==2.10
 itsdangerous==2.0.1
 Jinja2==3.0.1
-langdetect==1.0.9
 locust==2.15.1
 Mako==1.1.4
 MarkupSafe==2.0.1
