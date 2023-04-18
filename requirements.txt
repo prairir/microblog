@@ -4,6 +4,7 @@ attrs==22.2.0
 Babel==2.9.1
 blinker==1.4
 Brotli==1.0.9
+coverage==7.2.3
 certifi==2021.5.30
 cffi==1.15.1
 chardet==4.0.0
