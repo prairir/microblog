@@ -1,6 +1,6 @@
-projectKey=Microblog
+projectKey=microblog
 serverUrl=http://localhost:9000
 serverVersion=10.0.0.68432
-dashboardUrl=http://localhost:9000/dashboard?id=Microblog
-ceTaskId=AYeRYaVIn6nFf2fpPIhS
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AYeRYaVIn6nFf2fpPIhS
+dashboardUrl=http://localhost:9000/dashboard?id=microblog
+ceTaskId=AYeRo9_cBS_gtXIDx-KA
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYeRo9_cBS_gtXIDx-KA
