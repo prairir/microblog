@@ -19,6 +19,14 @@ Feature: Archive Posts
     And a banner should show, saying that the post has been 'removed'
 
 
+  Scenario: Successfully archive a post
+    Given that I am logged in
+    And I am on the 'Explore' page
+    When I click on the 'Archive' link
+    Then the link should change to 'Remove from Archive'
+    And a banner should show, saying that the post has been 'archived'
+
+
   Scenario: Successfully remove an archived post from the archived page
     Given that I am logged in
     And I am on the 'Profile' page
