@@ -61,13 +61,23 @@ Go to localhost:9000 and login with admin/admin on the spun up SonarQube webapp
 
 ### Then run the scanner to create the report
 
-Windows
-Run ``` sonar-scanner.bat -D"sonar.projectKey=Microblog" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.token=sqp_4a8f52f75c3f744c5080ec85f786e5927cef3c8e" ```
+```
+docker run --net host \
+    --rm \
+    -e SONAR_HOST_URL="<sonarqube url>" \
+    -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=<project name>" \
+    -e SONAR_TOKEN="<project token>" \
+    -v "<path to project to get scanned>:/usr/src" \
+    sonarsource/sonar-scanner-cli
+```
 
-Linux Run ```sonar-scanner \
-  -Dsonar.projectKey=Microblog \
-  -Dsonar.sources=. \
-  -Dsonar.host.url=http://localhost:9000/ \
-  -Dsonar.token=sqp_4a8f52f75c3f744c5080ec85f786e5927cef3c8e ```
-  
-test
+for example this is what mine looked like
+```
+docker run --net host \
+    --rm \
+    -e SONAR_HOST_URL="http://localhost:9000" \
+    -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=asdf" \
+    -e SONAR_TOKEN="sqp_2c7fe65655e846aee71f0267194bbe8365095cde" \
+    -v "/home/ryan/dev/test/microblog:/usr/src" \
+    sonarsource/sonar-scanner-cli
+```
