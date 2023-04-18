@@ -16,6 +16,8 @@
                 {% endset %}
                 {{ _('%(username)s said %(when)s',
                     username=user_link, when=moment(post.timestamp).fromNow()) }}
+                {% if post.author.username == current_user.username %}
+                <a href="{{ url_for('main.edit_post', id=post.id) }}" style="float:right; cursor:pointer;">Edit Post</a>
                 <br>
                 <span id="post{{ post.id }}">{{ post.body }}</span>
                 
