@@ -8,6 +8,14 @@ This is an example application featured in my [Flask Mega-Tutorial](https://blog
 
 2. ```docker run --name microblog -d -p 5000:5000 --rm microblog:latest```
 
+# Calculate line coverage
+
+Run ```coverage run -m unittest discover -s ./tests/unit```
+
+After generating the report with the above command then run...
+
+```coverage report``` or ```coverage html```
+
 # How to run behave tutorial
 
 *NOTE* behave steps in the .feature file MUST unicode match those in the 'steps' file
@@ -24,6 +32,12 @@ Also step files must follow the regex *step.py
 1. Running all behave features
 
 run  ```behave tests/features/add-task.feature```
+
+Some examples:
+``` behave tests/features/archive-post.feature ```
+``` behave tests/features/delete-post.feature ```
+``` behave tests/features/enable-2fa.feature ```
+``` behave tests/features/enable-editing-post.feature ```
 
 # How to run unit tests
 
@@ -43,13 +57,15 @@ run ``` python -m unittest discover -s ./tests/unit ```
 
 Run ``` docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest ```
 
-Linux Run ```sonar-scanner \
-  -Dsonar.projectKey=Microblog \
-  -Dsonar.sources=. \
-  -Dsonar.host.url=http://localhost:9000/ \
-  -Dsonar.token=sqp_4a8f52f75c3f744c5080ec85f786e5927cef3c8e ```
+Go to localhost:9000 and login with admin/admin on the spun up SonarQube webapp
 
 ### Then run the scanner to create the report
 
 Windows
 Run ``` sonar-scanner.bat -D"sonar.projectKey=Microblog" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.token=sqp_4a8f52f75c3f744c5080ec85f786e5927cef3c8e" ```
+
+Linux Run ```sonar-scanner \
+  -Dsonar.projectKey=Microblog \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=http://localhost:9000/ \
+  -Dsonar.token=sqp_4a8f52f75c3f744c5080ec85f786e5927cef3c8e ```
