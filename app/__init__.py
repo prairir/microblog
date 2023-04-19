@@ -14,10 +14,13 @@ from redis import Redis
 import rq
 from config import Config
 
+# initialize SQLAlchemy, Flask-Migrate, LoginManager, Mail, Bootstrap, Moment, Babel
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
+# set the view for unauthorized users trying to access login_required endpoint
 login.login_view = 'auth.login'
+# set the message displayed to the user when trying to access a login_required endpoint
 login.login_message = _l('Please log in to access this page.')
 mail = Mail()
 bootstrap = Bootstrap()
@@ -26,9 +29,12 @@ babel = Babel()
 
 
 def create_app(config_class=Config):
-    app = Flask(__name__)
+    """Create and configure a Flask application instance"""
+    app = Flask(__name__)  # create the Flask app instance
+    # load the application configuration from the specified object
     app.config.from_object(config_class)
 
+    # Initialize the extensions with the Flask app instance
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
@@ -36,11 +42,14 @@ def create_app(config_class=Config):
     bootstrap.init_app(app)
     moment.init_app(app)
     babel.init_app(app)
+
+    # Connect to Elasticsearch and Redis if the URL is specified in the application configuration
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
         if app.config['ELASTICSEARCH_URL'] else None
     app.redis = Redis.from_url(app.config['REDIS_URL'])
     app.task_queue = rq.Queue('microblog-tasks', connection=app.redis)
 
+    # Register the blueprints for the application
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
@@ -53,7 +62,9 @@ def create_app(config_class=Config):
     from app.api import bp as api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
 
+    # Set up logging based on the application configuration
     if not app.debug and not app.testing:
+        # Send email notifications in case of application failure
         if app.config['MAIL_SERVER']:
             auth = None
             if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
@@ -94,6 +105,3 @@ def create_app(config_class=Config):
 @babel.localeselector
 def get_locale():
     return request.accept_languages.best_match(current_app.config['LANGUAGES'])
-
-
-from app import models
